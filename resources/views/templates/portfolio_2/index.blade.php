@@ -11,6 +11,7 @@
             height: 100vh;
             background: url("{{ $banner }}") top center;
             background-size: cover;
+            position: relative;
         }
         .dark-mask{
             position: absolute;
@@ -25,11 +26,9 @@
 
 @section('content')
     <!-- ======= Hero Section ======= -->
-    <section id="hero" class="d-flex flex-column justify-content-center align-items-center">
-        <div class="dark-mask"></div>
-        <div class="hero-container" data-aos="fade-in">
+    <section id="hero" class="d-flex flex-column justify-content-center">
+        <div class="container" data-aos="zoom-in" data-aos-delay="100">
             <h1>{{ setting('datos-personales.full_name') }}</h1>
-            
             @if(setting('datos-personales.profession'))
             <p>{{ setting('datos-personales.profession') }}</p>
             @endif
@@ -37,6 +36,29 @@
             @if (setting('datos-personales.skills'))
             <p>Soy <span class="typed" data-typed-items="{{ setting('datos-personales.skills') }}"></span></p>
             @endif
+            <div class="social-links">
+                @if (setting('redes-sociales.facebook'))
+                <a href="{{ setting('redes-sociales.facebook') }}" target="_blank" class="facebook"><i class="bx bxl-facebook"></i></a>
+                @endif
+                @if (setting('redes-sociales.whatsapp'))
+                <a href="{{ setting('redes-sociales.whatsapp') }}" target="_blank" class="instagram"><i class="bx bxl-whatsapp"></i></a>
+                @endif
+                @if (setting('redes-sociales.instagram'))
+                <a href="{{ setting('redes-sociales.instagram') }}" target="_blank" class="instagram"><i class="bx bxl-instagram"></i></a>
+                @endif
+                @if (setting('redes-sociales.twitter'))
+                <a href="{{ setting('redes-sociales.twitter') }}" class="twitter" target="_blank"><i class="bx bxl-twitter"></i></a>
+                @endif
+                @if (setting('redes-sociales.youtube'))
+                <a href="{{ setting('redes-sociales.youtube') }}" target="_blank" class="google-plus"><i class="bx bxl-youtube"></i></a>
+                @endif
+                @if (setting('redes-sociales.github'))
+                <a href="{{ setting('redes-sociales.github') }}" target="_blank" class="linkedin"><i class="bx bxl-github"></i></a>
+                @endif
+                @if (setting('redes-sociales.linkedin'))
+                <a href="{{ setting('redes-sociales.linkedin') }}" target="_blank" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+                @endif
+            </div>
         </div>
     </section><!-- End Hero -->
 
@@ -44,7 +66,7 @@
 
         <!-- ======= About Section ======= -->
         <section id="about" class="about">
-        <div class="container">
+        <div class="container" data-aos="fade-up">
 
             <div class="section-title">
                 <h2>Acerca de mi</h2>
@@ -52,13 +74,13 @@
             </div>
 
             <div class="row">
-            <div class="col-lg-3" data-aos="fade-right">
+            <div class="col-lg-3">
                 @php
                     $image = setting('datos-personales.photo') ? asset('storage/'.setting('datos-personales.photo')) : asset('templates/'.setting('sitio.template').'/img/profile-img.jpg');
                 @endphp
                 <img src="{{ $image }}" class="img-fluid" alt="">
             </div>
-            <div class="col-lg-9 pt-4 pt-lg-0 content" data-aos="fade-left">
+            <div class="col-lg-9 pt-4 pt-lg-0 content">
                 @if(setting('datos-personales.profession'))
                 <h3>{{ setting('datos-personales.profession') }}</h3>
                 @endif
@@ -165,57 +187,57 @@
 
         <!-- ======= Resume Section ======= -->
         <section id="resume" class="resume">
-        <div class="container">
-
-            <div class="section-title">
-            <h2>Curriculum vitae</h2>
-            {{-- <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p> --}}
-            </div>
-
-            <div class="row">
-                <div class="col-lg-6" data-aos="fade-up">
-                    <h3 class="resume-title">Resumen</h3>
-                    <div class="resume-item pb-0">
-                        <h4>{{ setting('datos-personales.full_name') }}</h4>
-                        <p><em>{!! setting('datos-personales.about') !!}</em></p>
-                        <ul>
-                            <li>{{ setting('datos-personales.address') }}</li>
-                            <li>{{ setting('datos-personales.phone') }}</li>
-                            <li>{{ setting('datos-personales.email') }}</li>
-                        </ul>
+            <div class="container">
+    
+                <div class="section-title">
+                <h2>Curriculum vitae</h2>
+                {{-- <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p> --}}
+                </div>
+    
+                <div class="row">
+                    <div class="col-lg-6" data-aos="fade-up">
+                        <h3 class="resume-title">Resumen</h3>
+                        <div class="resume-item pb-0">
+                            <h4>{{ setting('datos-personales.full_name') }}</h4>
+                            <p><em>{!! setting('datos-personales.about') !!}</em></p>
+                            <ul>
+                                <li>{{ setting('datos-personales.address') }}</li>
+                                <li>{{ setting('datos-personales.phone') }}</li>
+                                <li>{{ setting('datos-personales.email') }}</li>
+                            </ul>
+                        </div>
+    
+                        <h3 class="resume-title">Educación</h3>
+                        @php
+                            $resumes = App\Models\Resume::where('category', 'educacion')->where('deleted_at', NULL)->get();
+                        @endphp
+                        @foreach ($resumes as $item)
+                            <div class="resume-item">
+                                <h4>{{ $item->title }}</h4>
+                                <h5>{{ $item->start }} - {{ $item->finish ?? 'Actualidad' }}</h5>
+                                <p><em>{{ $item->subtitle }}</em></p>
+                                <p>{!! $item->description !!}</p>
+                            </div>
+                        @endforeach
                     </div>
-
-                    <h3 class="resume-title">Educación</h3>
-                    @php
-                        $resumes = App\Models\Resume::where('category', 'educacion')->where('deleted_at', NULL)->get();
-                    @endphp
-                    @foreach ($resumes as $item)
-                        <div class="resume-item">
-                            <h4>{{ $item->title }}</h4>
-                            <h5>{{ $item->start }} - {{ $item->finish ?? 'Actualidad' }}</h5>
-                            <p><em>{{ $item->subtitle }}</em></p>
-                            <p>{!! $item->description !!}</p>
-                        </div>
-                    @endforeach
+                    <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+                        <h3 class="resume-title">Experiencia profesional</h3>
+                        @php
+                            $resumes = App\Models\Resume::where('category', 'profesion')->where('deleted_at', NULL)->get();
+                        @endphp
+                        @foreach ($resumes as $item)
+                            <div class="resume-item">
+                                <h4>{{ $item->title }}</h4>
+                                <h5>{{ $item->start }} - {{ $item->finish ?? 'Actualidad' }}</h5>
+                                <p><em>{{ $item->subtitle }}</em></p>
+                                <p>{!! $item->description !!}</p>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
-                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
-                    <h3 class="resume-title">Experiencia profesional</h3>
-                    @php
-                        $resumes = App\Models\Resume::where('category', 'profesion')->where('deleted_at', NULL)->get();
-                    @endphp
-                    @foreach ($resumes as $item)
-                        <div class="resume-item">
-                            <h4>{{ $item->title }}</h4>
-                            <h5>{{ $item->start }} - {{ $item->finish ?? 'Actualidad' }}</h5>
-                            <p><em>{{ $item->subtitle }}</em></p>
-                            <p>{!! $item->description !!}</p>
-                        </div>
-                    @endforeach
-                </div>
+    
             </div>
-
-        </div>
-        </section>
+            </section>
         <!-- End Resume Section -->
 
         <!-- ======= Portfolio Section ======= -->
@@ -377,70 +399,41 @@
 
         <!-- ======= Contact Section ======= -->
         <section id="contact" class="contact">
-        <div class="container">
+        <div class="container" data-aos="fade-up">
 
             <div class="section-title">
-            <h2>Contacto</h2>
-            {{-- <p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p> --}}
+                <h2>Contacto</h2>
             </div>
 
-            <div class="row" data-aos="fade-in">
+            <div class="row mt-1">
 
-            <div class="col-lg-5 d-flex align-items-stretch">
-                <div class="info">
-                    <div class="address">
-                        <i class="bi bi-geo-alt"></i>
-                        <h4>Ubicación:</h4>
-                        <p>{{ setting('datos-personales.address') }}</p>
+                <div class="col-lg-4">
+                    <div class="info">
+                        <div class="address">
+                            <i class="bi bi-geo-alt"></i>
+                            <h4>Ubicación:</h4>
+                            <p>{{ setting('datos-personales.address') }}</p>
+                        </div>
+    
+                        <div class="email">
+                            <i class="bi bi-envelope"></i>
+                            <h4>Email:</h4>
+                            <p>{{ setting('datos-personales.email') }}</p>
+                        </div>
+    
+                        <div class="phone">
+                            <i class="bi bi-phone"></i>
+                            <h4>Lama al:</h4>
+                            <p>{{ setting('datos-personales.phone') }}</p>
+                        </div>
                     </div>
+                </div>
 
-                    <div class="email">
-                        <i class="bi bi-envelope"></i>
-                        <h4>Email:</h4>
-                        <p>{{ setting('datos-personales.email') }}</p>
-                    </div>
-
-                    <div class="phone">
-                        <i class="bi bi-phone"></i>
-                        <h4>Lama al:</h4>
-                        <p>{{ setting('datos-personales.phone') }}</p>
-                    </div>
-
+                <div class="col-lg-8 mt-5 mt-lg-0">
                     @if (setting('datos-personales.location'))
                         <iframe src="{{ setting('datos-personales.location') }}" frameborder="0" style="border:0; width: 100%; height: 290px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     @endif
                 </div>
-
-            </div>
-
-            <div class="col-lg-7 mt-5 mt-lg-0 d-flex align-items-stretch">
-                <form action="forms/contact.php" method="post" role="form" class="php-email-form">
-                    <div class="row">
-                        <div class="form-group col-md-6">
-                        <label for="name">Tu Nombre</label>
-                        <input type="text" name="name" class="form-control" id="name" required>
-                        </div>
-                        <div class="form-group col-md-6">
-                        <label for="name">Tu Email</label>
-                        <input type="email" class="form-control" name="email" id="email" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="name">Asunto</label>
-                        <input type="text" class="form-control" name="subject" id="subject" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="name">Mensaje</label>
-                        <textarea class="form-control" name="message" rows="10" required></textarea>
-                    </div>
-                    <div class="my-3">
-                        <div class="loading">Loading</div>
-                        <div class="error-message"></div>
-                        <div class="sent-message">Your message has been sent. Thank you!</div>
-                    </div>
-                    <div class="text-center"><button type="submit">Enviar Mensaje</button></div>
-                </form>
-            </div>
 
             </div>
 

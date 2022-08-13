@@ -137,8 +137,8 @@ class SettingsTableSeeder extends Seeder
                 'value' => 'portfolio_1',
                 'details' => '{
 "options": {
-"portfolio_1": "iportfolio",
-"portfolio_2": "plantilla 2",
+"portfolio_1": "Iportfolio",
+"portfolio_2": "MyResume",
 "portfolio_3": "plantilla 3",
 "portfolio_4": "plantilla 4"
 }
